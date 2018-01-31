@@ -100,9 +100,29 @@
 			<input type="radio" name="question-10" value="5"> 5 <br>
 			
 			<br>
-			<button type="submit" class="btn btn-primary btn-md btn-block" id="submit"> Submit</button>
+			<button type="submit" class="btn btn-primary btn-md btn-block" id="submit" data-toggle="modal" data-target="#resultModal"> Submit</button>
 		</form>
 
+		<!-- Modal -->
+		<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h3 class="modal-title" id="resultModalLabel">Survey submitted!</h3>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <p>Friend name: <span id="disp-name"></span></p>
+		        <p>Friend photo: <img id="disp-photo" src="" alt="user photo"></p>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	</div>
 <script type="text/javascript">
 	$("#submit").on("click", function(event) {
@@ -125,11 +145,44 @@
 	    };
 	    $.post("/api/new", newFriend)
 	        .done(function(data) {
-	            console.log(data);
-	            alert("Submitting data...");
+	            // console.log(data);
+	            var matchData = findFriend(newFriend);
+	            // alert("Submitting data...");
 	        });
-	    console.log("newFriend", newFriend);
 	});
+
+	function findFriend(userObj) {
+		// call api to get friends
+		var minDiff = 100;
+		var diffObj = {
+			minDiff: minDiff,
+			minName: "",
+			minPhoto: ""
+		};
+		var userScores = userObj.scores;
+		$.get("api/friends")
+			.done(function(data) {
+				for (var i = 0; i < data.length; i++) {
+					if (userObj.name !== data[i].name) {
+						var totalDiff = 0;
+						var dataScores = data[i].scores;
+						for (var j = 0; j < dataScores.length; j++) {
+							totalDiff = totalDiff + Math.abs(parseFloat(dataScores[j]) - parseFloat(userScores[j]));
+						}
+						console.log("totalDiff", totalDiff);
+						if(totalDiff < diffObj.minDiff) {
+							diffObj.minDiff = totalDiff;
+							diffObj.minName = data[i].name;
+							diffObj.minPhoto = data[i].photo;
+						}
+					}
+				}
+				console.log("diffObj", diffObj);
+				$("#disp-name").text(diffObj.minName);
+				$("#disp-photo").attr("src", diffObj.minPhoto);
+			return diffObj;
+			});
+	}
 </script>
 
 </body>
