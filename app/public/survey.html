@@ -100,30 +100,35 @@
 			<input type="radio" name="question-10" value="5"> 5 <br>
 			
 			<br>
-			<button type="submit" class="btn btn-primary btn-lg btn-block" id="submit"> Submit</button>
+			<button type="submit" class="btn btn-primary btn-md btn-block" id="submit"> Submit</button>
 		</form>
 
 	</div>
 <script type="text/javascript">
 	$("#submit").on("click", function(event) {
-		event.preventDefault();
-		var newFriend = {
-			name: $("#name").val().trim(),
-			photo: $("#photo").val().trim(),
-			scores: [
-				$("input[type='radio'][name=question-1]:checked").val(),
-				$("input[type='radio'][name=question-2]:checked").val(),
-				$("input[type='radio'][name=question-3]:checked").val(),
-				$("input[type='radio'][name=question-4]:checked").val(),
-				$("input[type='radio'][name=question-5]:checked").val(),
-				$("input[type='radio'][name=question-6]:checked").val(),
-				$("input[type='radio'][name=question-7]:checked").val(),
-				$("input[type='radio'][name=question-8]:checked").val(),
-				$("input[type='radio'][name=question-9]:checked").val(),
-				$("input[type='radio'][name=question-10]:checked").val()
-			]
-		};
-		// console.log("newFriend", newFriend);
+	    event.preventDefault();
+	    var newFriend = {
+	        name: $("#name").val().trim(),
+	        photo: $("#photo").val().trim(),
+	        scores: [
+	            $("input[name=question-1]:checked").val(),
+	            $("input[name=question-2]:checked").val(),
+	            $("input[name=question-3]:checked").val(),
+	            $("input[name=question-4]:checked").val(),
+	            $("input[name=question-5]:checked").val(),
+	            $("input[name=question-6]:checked").val(),
+	            $("input[name=question-7]:checked").val(),
+	            $("input[name=question-8]:checked").val(),
+	            $("input[name=question-9]:checked").val(),
+	            $("input[name=question-10]:checked").val()
+	        ]
+	    };
+	    $.post("/api/new", newFriend)
+	        .done(function(data) {
+	            console.log(data);
+	            alert("Submitting data...");
+	        });
+	    console.log("newFriend", newFriend);
 	});
 </script>
 
