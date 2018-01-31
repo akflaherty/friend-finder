@@ -169,7 +169,7 @@
 						for (var j = 0; j < dataScores.length; j++) {
 							totalDiff = totalDiff + Math.abs(parseFloat(dataScores[j]) - parseFloat(userScores[j]));
 						}
-						console.log("totalDiff", totalDiff);
+						// console.log("totalDiff", totalDiff);
 						if(totalDiff < diffObj.minDiff) {
 							diffObj.minDiff = totalDiff;
 							diffObj.minName = data[i].name;
@@ -177,7 +177,8 @@
 						}
 					}
 				}
-				console.log("diffObj", diffObj);
+				// console.log("diffObj", diffObj);
+				// update modal
 				$("#disp-name").text(diffObj.minName);
 				$("#disp-photo").attr("src", diffObj.minPhoto);
 			return diffObj;

@@ -2,7 +2,15 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var path = require("path");
+var fs = require("fs");
 
+// fs.readFile('app/data/friends.js', 'utf8', function(err, data) {
+// 	if (err) {
+// 		return console.log(err);
+// 	}
+// 	var obj = JSON.parse(data);
+
+// });
 
 var app = express();
 var PORT = process.env.PORT || 3000;
@@ -34,16 +42,19 @@ app.post("/api/new", function(req, res) {
     var newFriend = req.body;
     console.log(newFriend);
     friendsArr.push(newFriend);
+    // setup JSON to push to file
     res.json(newFriend);
+    var friendsJSON = JSON.stringify(friendsArr);
+    fs.writeFile('app/data/friends.js', friendsJSON, 'utf8');
 });
 
 // !!! HARD CODED TEST DATA
 var friendsArr = [{
     "name": "Ahmed",
     "photo": "https://d17fnq9dkz9hgj.cloudfront.net/uploads/2012/11/153558006-tips-healthy-cat-632x475.jpg",
-    "scores": ["5","1","4","4","5","1","2","5","4","1"]
+    "scores": ["5", "1", "4", "4", "5", "1", "2", "5", "4", "1"]
 }, {
     "name": "Louis T. Delia",
     "photo": "https://pbs.twimg.com/profile_images/639214960049000449/lNCRC-ub.jpg",
-    "scores": ["3","3","4","2","2","1","3","2","2","3"]
+    "scores": ["3", "3", "4", "2", "2", "1", "3", "2", "2", "3"]
 }];
