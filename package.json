@@ -18,8 +18,8 @@
   },
   "homepage": "https://github.com/akflaherty/friend-finder#readme",
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "express": "^4.16.2",
+    "body-parser": "^1.20.3",
+    "express": "^4.21.0",
     "path": "^0.12.7"
   }
 }
